@@ -135,10 +135,10 @@ class RBTree():
         self.root.color = 0
 
     def find(self, value, comparison_count):
-        time.sleep(0.000001)
         return self._find(self.root, value, comparison_count)
 
     def _find(self, root, value, comparison_count):
+        time.sleep(0.000000001)
         if root == self.NULL:
             return [False, comparison_count + 1]
 
@@ -151,6 +151,28 @@ class RBTree():
         else:
             return self._find(root.right, value, comparison_count + 1)
 
+    def find_deepest_node(self):
+        if self.root == self.NULL:
+            return None, 0
+        
+        queue = [(self.root, 1)]
+        deepest_node = None
+        max_height = 0
+
+        while queue:
+            node, height = queue.pop(0)
+            
+            if height > max_height:
+                max_height = height
+                deepest_node = node
+
+            if node.left != self.NULL:
+                queue.append((node.left, height + 1))
+                
+            if node.right != self.NULL:
+                queue.append((node.right, height + 1))
+
+        return [deepest_node, max_height]
         
         # Time complexity: O (log N)
         # auxiliary space: O(log N)    

@@ -55,7 +55,7 @@ def binary_search(arr, key):
     begin = 0
     end = len(arr) - 1
     while begin <= end:
-        time.sleep(0.000001)
+        time.sleep(0.000000001)
         middle = (begin + end)//2
         if arr[middle] == key:
             comparison_count += 1
@@ -64,7 +64,7 @@ def binary_search(arr, key):
             comparison_count += 1
             end = middle - 1
         else:
-            comparison_count += 1
+            comparison_count += 2
             begin = middle + 1
     return [-1, comparison_count]
     # Time complexity is O(log N)
@@ -73,7 +73,7 @@ def binary_search(arr, key):
 def sequentialSearch(arr, key):
     begin = 0
     while begin < len(arr):
-        time.sleep(0.000001)
+        time.sleep(0.000000001)
         if arr[begin] == key:
             return [begin, begin+1]
         else:
@@ -86,7 +86,7 @@ def optimizedSequentialSearch(arr, key):
     # This implementation uses Hash table to map each element to its position
     hash_table = {}
     for i in range(len(arr)):
-        time.sleep(0.000001)
+        time.sleep(0.000000001)
         hash_table[arr[i]] = i
     # Search for element in the hash table
     if key in hash_table:

@@ -17,6 +17,30 @@ class Node:
             else:
                 self.right.insert(value)
 
+    def find_deepest_node(self, height=0):
+        if self is None:
+            return None, height
+        
+        queue = [(self, height)]
+        deepest_node = None
+        max_height = 0
+
+        while queue:
+            node, height = queue.pop(0)
+            
+            if height > max_height:
+                max_height = height
+                deepest_node = node
+
+            if node.left:
+                queue.append((node.left, height + 1))
+                
+            if node.right:
+                queue.append((node.right, height + 1))
+
+        return [deepest_node, max_height]
+
+
     def inorder_traversal(self):
         if self.left:
             self.left.inorder_traversal()
@@ -39,7 +63,7 @@ class Node:
         print(self.key)
 
     def find(self, value, comparison_count):
-        time.sleep(0.000001)
+        time.sleep(0.000000001)
         if value < self.key:
             comparison_count = comparison_count + 1
             if self.left is None:

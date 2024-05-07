@@ -1,10 +1,6 @@
 import staticarray
-import redBlackTree
-import linkedlist
-import binarySearchTree
-import avlTree
 import time
-import random
+from random import Random
 import psutil
 import os
 import numpy as np
@@ -14,29 +10,29 @@ max_generated_numbers = 100000
 stats_avltree = []
 stats = []
 worst_case = []
+overall_stats = []
+overall_worst_stats = []
 
 for i in range(0, 10):
     nums = list(range(initial_value, max_generated_numbers))
-    random.shuffle(nums)
+    Random(4).shuffle(nums)
+    arr = []
+    for i in nums:
+        arr.append(i)
     for j in range(0, 100):
-        initial_mem = psutil.Process(os.getpid()).memory_info().rss / 1024 ** 2
-        arr = []
-        for i in nums:
-            arr.append(i)
+        initial_mem = psutil.Process(os.getpid()).memory_full_info().uss
         start_time = time.time()
-        found_random = staticarray.sequentialSearch(arr, random.randint(0, max_generated_numbers))
-        end_mem = psutil.Process(os.getpid()).memory_info().rss / 1024 ** 2
+        found_random = staticarray.sequentialSearch(arr, Random(j).randint(0, max_generated_numbers))
+        end_mem = psutil.Process(os.getpid()).memory_full_info().uss
         end_time = time.time()
         elapsed_time = end_time - start_time
+        print(j)
         stats.append({'time_elapsed': elapsed_time, 'mem_used': end_mem - initial_mem, 'comparison_count': found_random[1]})
     for k in range (0, 3):
-        initial_mem = psutil.Process(os.getpid()).memory_info().rss / 1024 ** 2
-        arr = []
-        for i in nums:
-            arr.append(i)
+        initial_mem = psutil.Process(os.getpid()).memory_full_info().uss
         start_time = time.time()
-        found_random = staticarray.sequentialSearch(arr, 10000000000)
-        end_mem = psutil.Process(os.getpid()).memory_info().rss / 1024 ** 2
+        found_random = staticarray.sequentialSearch(arr, arr[-1])
+        end_mem = psutil.Process(os.getpid()).memory_full_info().uss
         end_time = time.time()
         elapsed_time = end_time - start_time
         worst_case.append({'time_elapsed': elapsed_time, 'mem_used': end_mem - initial_mem, 'comparison_count': found_random[1]})
@@ -55,11 +51,15 @@ for i in range(0, 10):
     comparison_count_mean = np.mean(comparison_count_list)
     comparison_count_std = np.std(comparison_count_list)
 
-    print("\nStats Mean and Standard Deviation:")
-    print("Time Elapsed - Mean:", time_elapsed_mean, "Std Dev:", time_elapsed_std)
-    print("Memory Used - Mean:", mem_used_mean, "Std Dev:", mem_used_std)
-    print("Comparison Count - Mean:", comparison_count_mean, "Std Dev:", comparison_count_std)
-
+    overall_stats.append({'size': max_generated_numbers,
+                          'time_elapsed_mean': time_elapsed_mean,
+                          'time_elapsed_std': time_elapsed_std,
+                          'comparison_count_mean': comparison_count_mean,
+                          'comparison_count_std': comparison_count_std,
+                          'mem_used_mean': mem_used_mean,
+                          'mem_used_std': mem_used_std
+                          })
+    
     # Calculando média e desvio padrão para os dados em worst_case
     time_elapsed_list = [data['time_elapsed'] for data in worst_case]
     mem_used_list = [data['mem_used'] for data in worst_case]
@@ -74,8 +74,20 @@ for i in range(0, 10):
     comparison_count_mean = np.mean(comparison_count_list)
     comparison_count_std = np.std(comparison_count_list)
 
-    print("\nWorst Case Mean and Standard Deviation:")
-    print("Time Elapsed - Mean:", time_elapsed_mean, "Std Dev:", time_elapsed_std)
-    print("Memory Used - Mean:", mem_used_mean, "Std Dev:", mem_used_std)
-    print("Comparison Count - Mean:", comparison_count_mean, "Std Dev:", comparison_count_std)
+    overall_worst_stats.append({'size': max_generated_numbers,
+                                'time_elapsed_mean': time_elapsed_mean,
+                                'time_elapsed_std': time_elapsed_std,
+                                'comparison_count_mean': comparison_count_mean,
+                                'comparison_count_std': comparison_count_std,
+                                'mem_used_mean': mem_used_mean,
+                                'mem_used_std': mem_used_std
+                                })
+    
     max_generated_numbers += 100000
+
+print("\nStats Mean and Standard Deviation:")
+for x in overall_stats:
+    print(x)
+print("\nWorst Case Mean and Standard Deviation:")
+for x in overall_worst_stats:
+    print(x)

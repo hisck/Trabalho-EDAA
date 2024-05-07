@@ -69,7 +69,7 @@ class LinkedList:
         comparison_count = 0
 
         while current != None:
-            time.sleep(0.000001)
+            time.sleep(0.000000001)
             comparison_count = comparison_count + 1
             if current.data == x:
                 return [True, comparison_count]
@@ -86,12 +86,12 @@ class LinkedList:
         while (current.next != None):
             hash_table[current.data] = current
             current = current.next
-            time.sleep(0.000001)
+            time.sleep(0.000000001)
         
         hash_table[current.data] = current
 
         if x in hash_table:
-            time.sleep(0.000001)
+            time.sleep(0.000000001)
             return [True, 1]
         else:
             return [False, 1]

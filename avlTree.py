@@ -73,7 +73,7 @@ class AVLTree:
         return y
     
     def find(self, root, value, comparison_count):
-        time.sleep(0.000001)
+        time.sleep(0.000000001)
         if not root:
             return [False, comparison_count + 1]
         
@@ -96,3 +96,22 @@ class AVLTree:
 
     def search_value(self, value):
         return self.find(self.root, value, 0)
+    
+    def find_deepest_node(self, root):
+        if root is None:
+            return None
+        
+        queue = [root]
+        deepest_node = None
+
+        while queue:
+            node = queue.pop(0)
+            deepest_node = node
+            
+            if node.left:
+                queue.append(node.left)
+                
+            if node.right:
+                queue.append(node.right)
+
+        return deepest_node
